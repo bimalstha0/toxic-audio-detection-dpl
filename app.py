@@ -17,7 +17,6 @@ if audio_uploaded:
     st.audio(audio_uploaded)
     if predict_button:
         predictions = pipeline.make_prediction(audio_uploaded)
-        st.write(predictions)
         start = -1
         cont = False
         for i in range(len(predictions)):
@@ -26,7 +25,7 @@ if audio_uploaded:
                     start = i*5
                 cont = True
             elif start!= -1 and predictions[i] == 0:
-                st.write(f'!!! TOXICITY DETECTED !!! ${start}-${end}')
+                st.write(f'!!! TOXICITY DETECTED !!! ${start}-${i*5}')
                 st.audio(audio_uploaded, start_time = start, end_time = (i)*5)
                 start = -1
                 cont = False
