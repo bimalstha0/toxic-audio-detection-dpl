@@ -1,6 +1,7 @@
 import streamlit as st
 import pipeline 
 # import sounddevice as sd
+import datetime
 
 st.set_page_config(
     page_title='Toxicity Detection',
@@ -20,7 +21,7 @@ if audio_uploaded:
         if not any(predictions):
             st.write('<span style="color:green">No Toxicity Detected</span>', unsafe_allow_html=True)
         else:
-            st.write('<span style="color:red">Toxicity Detected</span>', unsafe_allow_html=True)
+            st.write('<span style="color:red">!!! TOXICITY DETECTED !!!</span>', unsafe_allow_html=True)
     
         
         start = -1
@@ -29,7 +30,7 @@ if audio_uploaded:
                 if start == -1:
                     start = i * 5
             elif start != -1:
-                st.write(f'!!! TOXICITY DETECTED !!! {start}-{i*5}')
+                st.write(f'!!! TOXIC !!! {str(datetime.timedelta(seconds = start))}-{str(datetime.timedelta(seconds = i*5))}')
                 st.audio(audio_uploaded, start_time=start, end_time=i*5)
                 start = -1
         
