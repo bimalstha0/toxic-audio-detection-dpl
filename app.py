@@ -29,7 +29,7 @@ if audio_uploaded:
                 st.audio(audio_uploaded, start_time = start, end_time = (i)*5)
                 start = -1
                 cont = False
-        if start:
+        if start!= -1 :
             st.audio(audio_uploaded, start_time = start, end_time = len(predictions)*5)
 
 
