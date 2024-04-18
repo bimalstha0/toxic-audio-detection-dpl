@@ -1,9 +1,6 @@
 import streamlit as st
-from st_audiorec import st_audiorec
 import pipeline 
 import sounddevice as sd
-import threading
-import time 
 
 st.set_page_config(
     page_title='Toxicity Detection',
