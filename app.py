@@ -17,20 +17,23 @@ if audio_uploaded:
     st.audio(audio_uploaded)
     if predict_button:
         predictions = pipeline.make_prediction(audio_uploaded)
+        if not any(predictions):
+            st.write('No Toxicity Detected')
+        else:
+            st.write('Toxicity Detected')
+        
         start = -1
-        cont = False
-        for i in range(len(predictions)):
-            if start== -1 and predictions[i]==1:
-                if not cont:
-                    start = i*5
-                cont = True
-            elif start!= -1 and predictions[i] == 0:
-                st.write(f'!!! TOXICITY DETECTED !!! ${start}-${i*5}')
-                st.audio(audio_uploaded, start_time = start, end_time = (i)*5)
+        for i, prediction in enumerate(predictions):
+            if prediction == 1:
+                if start == -1:
+                    start = i * 5
+            elif start != -1:
+                st.write(f'!!! TOXICITY DETECTED !!! {start}-{i*5}')
+                st.audio(audio_uploaded, start_time=start, end_time=i*5)
                 start = -1
-                cont = False
-        if start!= -1 :
-            st.audio(audio_uploaded, start_time = start, end_time = len(predictions)*5)
+        
+        if start != -1:
+            st.audio(audio_uploaded, start_time=start, end_time=len(predictions)*5)
 
 
 st.write('OR')
