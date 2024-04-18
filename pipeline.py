@@ -8,7 +8,7 @@ from tensorflow.keras.models import load_model
 model = load_model('toxic_audio_model.hdf5')
 
 def convert_to_wav(audio):
-    if audio.type == 'audio/wav':
+    if audio.type == 'audio/wav' or audio.type == 'audio/x-wav':
         return audio
     else:
         audio_data = BytesIO(audio.read())
