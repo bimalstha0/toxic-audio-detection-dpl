@@ -12,7 +12,7 @@ def convert_to_wav(audio):
         return audio
     else:
         audio_data = BytesIO(audio.read())
-        audio_segment = AudioSegment.from_file(audio_data, format=str(audio.type).replace('x-','')) if str(audio.type).startswith('audio/x-') else AudioSegment.from_file(audio_data, format=audio.type) 
+        audio_segment = AudioSegment.from_file(audio_data, format=str(audio.type)[8:]) if str(audio.type).startswith('audio/x-') else AudioSegment.from_file(audio_data, format=str(audio.type)[6:]) 
         wav_data = BytesIO()
         audio_segment.export(wav_data, format="wav")
         wav_data.seek(0)
