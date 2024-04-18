@@ -22,11 +22,11 @@ if audio_uploaded:
         cont = False
         for i in range(len(predictions)):
             if start== -1 and predictions[i]==1:
-                st.write('!!! TOXICITY DETECTED !!!')
                 if not cont:
                     start = i*5
                 cont = True
             elif start!= -1 and predictions[i] == 0:
+                st.write(f'!!! TOXICITY DETECTED !!! $(start)-$(end)')
                 st.audio(audio_uploaded, start_time = start, end_time = (i)*5)
                 start = -1
                 cont = False
