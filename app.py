@@ -17,10 +17,11 @@ if audio_uploaded:
     st.audio(audio_uploaded)
     if predict_button:
         predictions = pipeline.make_prediction(audio_uploaded)
-        if not any(predictions):
-            st.write('No Toxicity Detected')
+         if not any(predictions):
+            st.write('<span style="color:green">No Toxicity Detected</span>', unsafe_allow_html=True)
         else:
-            st.write('Toxicity Detected')
+            st.write('<span style="color:red">Toxicity Detected</span>', unsafe_allow_html=True)
+    
         
         start = -1
         for i, prediction in enumerate(predictions):
