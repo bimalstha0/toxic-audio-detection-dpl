@@ -1,6 +1,6 @@
 import streamlit as st
 import pipeline 
-import sounddevice as sd
+# import sounddevice as sd
 
 st.set_page_config(
     page_title='Toxicity Detection',
@@ -40,38 +40,28 @@ st.write('Live Audio')
 
 
 
-# Function to record audio chunk
-def record_audio_chunk(chunk_duration=5, fs=22050):
-    chunk_samples = int(chunk_duration * fs)
-    recording = sd.rec(chunk_samples, samplerate=fs, channels=1, dtype='int16')
-    sd.wait()
-    return recording
+# def record_audio_chunk(chunk_duration=5, fs=22050):
+#     chunk_samples = int(chunk_duration * fs)
+#     recording = sd.rec(chunk_samples, samplerate=fs, channels=1, dtype='int16')
+#     sd.wait()
+#     return recording
 
 
 
-# # Function to start recording and playback
-# def record_and_play(chunk_duration, fs):
-#     while True:
-#         st.write("Recording...")
-#         audio_chunk = record_audio_chunk(chunk_duration, fs)
-#         st.write("Playing...")
-#         play_audio(audio_chunk)
-#         st.write("Waiting for next recording...")
-#         time.sleep(chunk_duration)
 
 fs = 22050  # Sample rate
-chunk_duration = 5  # Duration of each audio chunk in seconds
+chunk_duration = 5 
 recording = False
 
-st.title("Audio Recorder")
+# st.title("Audio Recorder")
 
-if st.button("Start Recording"):
-    recording = True
-    while recording:
-        rec = record_audio_chunk()
-        st.audio(rec)
-if st.button("Stop Recording"):
-    recording = False
+# if st.button("Start Recording"):
+#     recording = True
+#     while recording:
+#         rec = record_audio_chunk()
+#         st.audio(rec)
+# if st.button("Stop Recording"):
+#     recording = False
 
 
 # wav_audio_data = st_audiorec()
