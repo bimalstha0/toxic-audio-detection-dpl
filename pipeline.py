@@ -4,6 +4,8 @@ from pydub import AudioSegment
 from io import BytesIO
 import numpy as np
 from tensorflow.keras.models import load_model
+import soundfile as sf
+
 
 model = load_model('toxic_audio_model.hdf5')
 
@@ -18,10 +20,13 @@ def convert_to_wav(audio):
         wav_data.seek(0)
         return wav_data
 
-def make_prediction(audio):
-    audio = convert_to_wav(audio)
-    mfccs = get_mfccs_from_audio(audio)
+def make_prediction(audio, is_bytes = False):
+    if not is_bytes:
+        audio = convert_to_wav(audio)
+    mfccs = get_mfccs_from_audio(audio, is_bytes = is_bytes)
     mfccs = np.array(mfccs)
+    if np.all(np.isnan(mfccs)):
+        return -1
     mfccs = mfccs.reshape(mfccs.shape[0], mfccs.shape[1], mfccs.shape[2], 1)
     prediction = (model.predict(mfccs) > 0.5).astype(int)
     return prediction
@@ -33,9 +38,16 @@ def vol_normalization(audio, max_rms):
     return normalized_audio
 
 
-def get_mfccs_from_audio(audio_path):
+def get_mfccs_from_audio(audio,is_bytes = False):
     max_rms = 0.35941255
-    y, sr = librosa.load(audio_path)
+    y = None
+    sr = 22050
+    if is_bytes:
+        y, s = sf.read(BytesIO(audio))
+        y = librosa.resample(y=y.T,orig_sr=s,target_sr = sr)
+        y = librosa.to_mono(y)
+    else:
+        y, sr = librosa.load(audio)
     y = vol_normalization(y, max_rms)
     mfccs = []
     start_sample = 0
