@@ -9,7 +9,7 @@ st.set_page_config(
     page_icon='🔊'
 )
 
-def load_pred(predictions,audio)
+def load_pred(predictions,audio):
     if np.all(np.isnan(predictions)):
         st.write('<span style="color:red">!!! AUDIO NEEDS TO BE LONGER THAN 5 SEC !!!</span>', unsafe_allow_html=True)  
     elif not any(predictions):
