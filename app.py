@@ -9,7 +9,26 @@ st.set_page_config(
     page_icon='🔊'
 )
 
-
+def load_pred(predictions,audio)
+    if np.all(np.isnan(predictions)):
+        st.write('<span style="color:red">!!! AUDIO NEEDS TO BE LONGER THAN 5 SEC !!!</span>', unsafe_allow_html=True)  
+    elif not any(predictions):
+        st.write('<span style="color:green">No Toxicity Detected</span>', unsafe_allow_html=True)
+    else:
+        st.write('<span style="color:red">!!! TOXICITY DETECTED !!!</span>', unsafe_allow_html=True)  
+        start = -1
+        for i, prediction in enumerate(predictions):
+            if prediction == 1:
+                if start == -1:
+                    start = i * 5
+            elif start != -1:
+                st.write(f'!!! TOXIC !!! {str(datetime.timedelta(seconds = start))}-{str(datetime.timedelta(seconds = i*5))}')
+                st.audio(audio, start_time=start, end_time=i*5)
+                start = -1
+        
+        if start != -1:
+            st.write(f'!!! TOXIC !!! {str(datetime.timedelta(seconds = start))}-{str(datetime.timedelta(seconds = i*5))}')
+            st.audio(audio, start_time=start, end_time=len(predictions)*5)
 
 st.title('Toxic Audio Detection')
 
@@ -19,26 +38,7 @@ if audio_uploaded:
     st.audio(audio_uploaded)
     if predict_button:
         predictions = pipeline.make_prediction(audio_uploaded)
-        st.write(predictions)
-        if np.all(np.isnan(predictions)):
-            st.write('<span style="color:red">!!! AUDIO NEEDS TO BE LONGER THAN 5 SEC !!!</span>', unsafe_allow_html=True)  
-        elif not any(predictions):
-            st.write('<span style="color:green">No Toxicity Detected</span>', unsafe_allow_html=True)
-        else:
-            st.write('<span style="color:red">!!! TOXICITY DETECTED !!!</span>', unsafe_allow_html=True)  
-            start = -1
-            for i, prediction in enumerate(predictions):
-                if prediction == 1:
-                    if start == -1:
-                        start = i * 5
-                elif start != -1:
-                    st.write(f'!!! TOXIC !!! {str(datetime.timedelta(seconds = start))}-{str(datetime.timedelta(seconds = i*5))}')
-                    st.audio(audio_uploaded, start_time=start, end_time=i*5)
-                    start = -1
-            
-            if start != -1:
-                st.write(f'!!! TOXIC !!! {str(datetime.timedelta(seconds = start))}-{str(datetime.timedelta(seconds = i*5))}')
-                st.audio(audio_uploaded, start_time=start, end_time=len(predictions)*5)
+        load_pred(predictions,audio_uploaded)
 
 
 st.write('OR')
@@ -57,26 +57,7 @@ if wav_audio_data is not None:
     if st.button('Examine Recording'):
         # st.write(wav_audio_data)
         predictions = pipeline.make_prediction(wav_audio_data,is_bytes=True)
-        st.write([predictions])
-        if predictions == -1:
-            st.write('<span style="color:red">!!! AUDIO NEEDS TO BE LONGER THAN 5 SEC !!!</span>', unsafe_allow_html=True)  
-        elif not any(predictions):
-            st.write('<span style="color:green">No Toxicity Detected</span>', unsafe_allow_html=True)
-        else:
-            st.write('<span style="color:red">!!! TOXICITY DETECTED !!!</span>', unsafe_allow_html=True)          
-            start = -1
-            for i, prediction in enumerate(predictions):
-                if prediction == 1:
-                    if start == -1:
-                        start = i * 5
-                elif start != -1:
-                    st.write(f'!!! TOXIC !!! {str(datetime.timedelta(seconds = start))}-{str(datetime.timedelta(seconds = i*5))}')
-                    st.audio(wav_audio_data, start_time=start, end_time=i*5)
-                    start = -1
-            
-            if start != -1:
-                st.write(f'!!! TOXIC !!! {str(datetime.timedelta(seconds = start))}-{str(datetime.timedelta(seconds = (i+1)*5))}')
-                st.audio(wav_audio_data, start_time=start, end_time=len(predictions)*5)
+        load_pred(predictions,wav_audio_data)        
 
 
 st.markdown("---")
