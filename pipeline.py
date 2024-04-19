@@ -26,7 +26,7 @@ def make_prediction(audio, is_bytes = False):
     mfccs = get_mfccs_from_audio(audio, is_bytes = is_bytes)
     mfccs = np.array(mfccs)
     if np.all(np.isnan(mfccs)):
-        return -1
+        return np.array([])
     mfccs = mfccs.reshape(mfccs.shape[0], mfccs.shape[1], mfccs.shape[2], 1)
     prediction = (model.predict(mfccs) > 0.5).astype(int)
     return prediction
