@@ -19,7 +19,7 @@ if audio_uploaded:
     if predict_button:
         predictions = pipeline.make_prediction(audio_uploaded)
         st.write(predictions)
-        if predictions == -1:
+        if np.all(np.isnan(predictions)):
             st.write('<span style="color:red">!!! AUDIO NEEDS TO BE LONGER THAN 5 SEC !!!</span>', unsafe_allow_html=True)  
         elif not any(predictions):
             st.write('<span style="color:green">No Toxicity Detected</span>', unsafe_allow_html=True)
