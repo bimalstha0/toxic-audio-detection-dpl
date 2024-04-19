@@ -1,6 +1,5 @@
 import streamlit as st
 import pipeline 
-import sounddevice as sd
 from st_audiorec import st_audiorec
 import datetime
 
