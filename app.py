@@ -41,15 +41,10 @@ if audio_uploaded:
         load_pred(predictions,audio_uploaded)
 
 
-st.write('OR')
+st.markdown("---")
 st.write('Live Audio')
 
-
-fs = 22050  # Sample rate
-chunk_duration = 5 
-recording = False
-
-st.title("Audio Recorder")
+st.subheader("Audio Recorder")
 
 wav_audio_data = st_audiorec()
 
