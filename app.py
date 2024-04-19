@@ -42,7 +42,6 @@ if audio_uploaded:
 
 
 st.markdown("---")
-st.write('Live Audio')
 
 st.subheader("Audio Recorder")
 
